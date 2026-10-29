@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <!-- price : décimal > 0, format XX.XX (1 ou 2 chiffres avant le point, 2 après) -->
+  <xs:simpleType name="priceValueType">
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0"/>
+      <xs:pattern value="\d{1,2}\.\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- price avec attribut unit -->
+  <xs:complexType name="priceType">
+    <xs:simpleContent>
+      <xs:extension base="priceValueType">
+        <xs:attribute name="unit" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- calories : entier de 100 à 2000 -->
+  <xs:simpleType name="caloriesType">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="100"/>
+      <xs:maxInclusive value="2000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- category : sweet ou salty -->
+  <xs:simpleType name="categoryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="sweet"/>
+      <xs:enumeration value="salty"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="breakfast_menu">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="food" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="price" type="priceType"/>
+              <xs:element name="description" type="xs:string"/>
+              <xs:element name="calories" type="caloriesType"/>
+            </xs:sequence>
+            <xs:attribute name="category" type="categoryType" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
